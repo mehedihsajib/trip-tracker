@@ -127,7 +127,7 @@ function App() {
   }
   return (
     <Container>
-      <Header />
+      <Header numOfItems={numOfItems} numOfPackedItems={numOfPackedItems} />
       <ContentBox>
         {status === "welcome" && <StartScreen handleScreen={handleScreen} />}
         {status === "planTrip" && (
@@ -151,7 +151,7 @@ function App() {
         {status === "end" && (
           <EndScreen handlesStartScreen={handlesStartScreen} />
         )}
-        {numOfItems > 1 && numOfItems === numOfPackedItems && (
+        {numOfItems > 0 && numOfItems === numOfPackedItems && (
           <Button onClick={handleEndScreen}>Close</Button>
         )}
       </ContentBox>
