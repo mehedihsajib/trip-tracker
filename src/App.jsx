@@ -152,7 +152,9 @@ function App() {
           <EndScreen handlesStartScreen={handlesStartScreen} />
         )}
         {numOfItems > 0 && numOfItems === numOfPackedItems && (
-          <Button onClick={handleEndScreen}>Close</Button>
+          <Button onClick={handleEndScreen} initialY="20px" animateY="0px">
+            Done
+          </Button>
         )}
       </ContentBox>
     </Container>

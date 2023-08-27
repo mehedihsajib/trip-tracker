@@ -8,7 +8,9 @@ function EndScreen({ handlesStartScreen }) {
       <p className="text-gray text-lg">
         You have packed everything needed for your trip.
       </p>
-      <Button onClick={handlesStartScreen}>Plan a new trip</Button>
+      <Button onClick={handlesStartScreen} initialY="30px" animateY="0">
+        Plan a new trip
+      </Button>
     </div>
   );
 }

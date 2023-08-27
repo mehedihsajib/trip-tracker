@@ -1,7 +1,14 @@
 /* eslint-disable react/prop-types */
+import { motion } from "framer-motion";
+
 function Form({ text, setText, handleAddItems, quantity, setQuantity }) {
   return (
-    <form onSubmit={handleAddItems}>
+    <motion.form
+      onSubmit={handleAddItems}
+      initial={{ y: "10px", opacity: 0 }}
+      animate={{ y: "0", opacity: 1 }}
+      transition={{ ease: "linear", duration: 0.3 }}
+    >
       <select
         className="bg-brown h-16 py-4 px-4 rounded-l-md focus:outline-none"
         value={quantity}
@@ -25,7 +32,7 @@ function Form({ text, setText, handleAddItems, quantity, setQuantity }) {
       >
         Add
       </button>
-    </form>
+    </motion.form>
   );
 }
 
