@@ -5,6 +5,7 @@ import Button from "./components/Button";
 import Container from "./components/Container";
 import ContentBox from "./components/ContentBox";
 import EndScreen from "./components/EndScreen";
+import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Header from "./components/Header";
 import ItemList from "./components/ItemList";
@@ -13,6 +14,7 @@ import StartScreen from "./components/StartScreen";
 const initialState = {
   items: [],
   status: "welcome",
+  filter: "all",
 };
 
 function reducer(state, action) {
@@ -57,13 +59,21 @@ function reducer(state, action) {
         items: [],
         status: "end",
       };
+    case "SET_FILTER":
+      return {
+        ...state,
+        filter: action.payload,
+      };
     default:
       throw new Error("Unknown action");
   }
 }
 
 function App() {
-  const [{ status, items }, dispatch] = useReducer(reducer, initialState);
+  const [{ status, items, filter }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
   const [text, setText] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -125,6 +135,43 @@ function App() {
       payload: id,
     });
   }
+
+  // Filter items
+  const filteredItems = items.filter((item) => {
+    if (filter === "all") {
+      return true;
+    } else if (filter === "packed") {
+      return item.packed;
+    } else if (filter === "unpacked") {
+      return !item.packed;
+    }
+    return false;
+  });
+
+  // Show all items
+  function handleShowAllItems() {
+    dispatch({
+      type: "SET_FILTER",
+      payload: "all",
+    });
+  }
+
+  // Show packed items
+  function handleShowPackedItems() {
+    dispatch({
+      type: "SET_FILTER",
+      payload: "packed",
+    });
+  }
+
+  // Show unpacked items
+  function handleShowUnPackedItems() {
+    dispatch({
+      type: "SET_FILTER",
+      payload: "unpacked",
+    });
+  }
+
   return (
     <Container>
       <Header numOfItems={numOfItems} numOfPackedItems={numOfPackedItems} />
@@ -138,15 +185,27 @@ function App() {
               handleAddItems={handleAddItems}
               quantity={quantity}
               setQuantity={setQuantity}
+              handleShowPackedItems={handleShowPackedItems}
+              handleShowUnPackedItems={handleShowUnPackedItems}
+              handleShowAllItems={handleShowAllItems}
             />
             <ItemList
               items={items}
+              filteredItems={filteredItems}
               hanldeDeleteItem={hanldeDeleteItem}
               handlePackedItems={handlePackedItems}
               numOfItems={numOfItems}
               numOfPackedItems={numOfPackedItems}
             />
           </>
+        )}
+        {numOfItems > 0 && (
+          <Filter
+            handleShowPackedItems={handleShowPackedItems}
+            handleShowAllItems={handleShowAllItems}
+            handleShowUnPackedItems={handleShowUnPackedItems}
+            filter={filter}
+          />
         )}
         {status === "end" && (
           <EndScreen handlesStartScreen={handlesStartScreen} />
